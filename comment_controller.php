@@ -10,12 +10,6 @@ class Comment_controller extends Module_controller
 {
     public function __construct()
     {
-        if (! $this->authorized()) {
-            $obj = new View();
-            $obj->view('json', array('msg' => array('error' =>'Not authorized')));
-            die();
-        }
-
         $this->module_path = dirname(__FILE__);
     }
 
