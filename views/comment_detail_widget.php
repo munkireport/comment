@@ -3,3 +3,11 @@
     <div class="comment" data-section="client"></div>
     </table>
 </div>
+
+<script>
+
+$(document).on('appReady', function(e, lang) {
+
+});
+
+</script>
