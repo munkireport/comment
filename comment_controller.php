@@ -21,6 +21,10 @@ class Comment_controller extends Module_controller
         $section = post('section');
         $text = post('text');
         $html = post('html');
+        if($html){
+            $html = $this->_filter_html($html);
+        }
+
         if ($serial_number and $section and $text) {
             if (authorized_for_serial($serial_number)) {
                 $comment = Comment_model::updateOrCreate(
@@ -88,5 +92,19 @@ class Comment_controller extends Module_controller
      **/
     public function delete()
     {
+    }
+
+    private function _filter_html($html)
+    {
+        $dom = new DOMDocument();
+        $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD);
+        $tags_to_remove = array('script','style','iframe','link');
+        foreach($tags_to_remove as $tag){
+            $element = $dom->getElementsByTagName($tag);
+            foreach($element  as $item){
+                $item->parentNode->removeChild($item);
+            }
+        }
+        return $dom->saveHTML();
     }
 } // END class Comment_controller
