@@ -97,14 +97,13 @@ class Comment_controller extends Module_controller
     private function _filter_html($html)
     {
         $dom = new DOMDocument();
-        $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD);
-        $tags_to_remove = array('script','style','iframe','link');
-        foreach($tags_to_remove as $tag){
+        $dom->loadHTML($html, LIBXML_HTML_NODEFDTD);
+        foreach(['script', 'style', 'iframe', 'link'] as $tag){
             $element = $dom->getElementsByTagName($tag);
             foreach($element  as $item){
                 $item->parentNode->removeChild($item);
             }
         }
-        return $dom->saveHTML();
+        return utf8_decode($dom->saveHTML($dom->documentElement));
     }
 } // END class Comment_controller
