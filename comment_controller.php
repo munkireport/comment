@@ -60,17 +60,21 @@ class Comment_controller extends Module_controller
     public function retrieve($serial_number = '', $section = '')
     {
         $out = [];
-        $where[] = ['serial_number', $serial_number];
+        $where[] = ['comment.serial_number', $serial_number];
         if($section){
             $where[] = ['section', $section];
-            $comment = Comment_model::where($where)->first();
+            $comment = Comment_model::where($where)
+                ->filter('groupOnly')
+                ->first();
             if ($comment) {
                 $out = $comment;
             }
         }else {
-            $comment = Comment_model::where($where)->get();
+            $comment = Comment_model::where($where)
+                ->filter('groupOnly')
+                ->get();
             if($comment){
-                $out = $comment->toArray();
+               $out = $comment->toArray();
             }
         }
 
