@@ -1,5 +1,7 @@
 <?php
 
+use \Parsedown;
+
 /**
  * Comment_controller class
  *
@@ -20,10 +22,7 @@ class Comment_controller extends Module_controller
         $serial_number = post('serial_number');
         $section = post('section');
         $text = post('text');
-        $html = post('html');
-        if($html){
-            $html = $this->_filter_html($html);
-        }
+        $html = $this->ParseMarkdown($text);
 
         if ($serial_number and $section and $text) {
             if (authorized_for_serial($serial_number)) {
@@ -98,16 +97,12 @@ class Comment_controller extends Module_controller
     {
     }
 
-    private function _filter_html($html)
+    private function ParseMarkdown($markdown)
     {
-        $dom = new DOMDocument();
-        $dom->loadHTML($html, LIBXML_HTML_NODEFDTD);
-        foreach(['script', 'style', 'iframe', 'link'] as $tag){
-            $element = $dom->getElementsByTagName($tag);
-            foreach($element  as $item){
-                $item->parentNode->removeChild($item);
-            }
-        }
-        return utf8_decode($dom->saveHTML($dom->documentElement));
+        $parsedown = new Parsedown();
+        $parsedown->setSafeMode(true);
+        return $parsedown->text($markdown);
     }
+
+
 } // END class Comment_controller

@@ -1,5 +1,8 @@
 {
     "name": "munkireport/comment",
     "description": "Module for munkireport.",
-    "license": "MIT"
+    "license": "MIT",
+    "require": {
+        "erusev/parsedown": "^1.7"
+    }
 }
