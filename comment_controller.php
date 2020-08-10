@@ -1,6 +1,6 @@
 <?php
 
-use \Parsedown;
+use \Parsedown as Parsedown;
 
 /**
  * Comment_controller class
